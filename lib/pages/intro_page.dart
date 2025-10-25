@@ -33,7 +33,7 @@ class IntroPage extends StatelessWidget {
                 const SizedBox(height: 70),
                 FadeInLeft(
                   child: Text(
-                    'Interstellar Wallet',
+                    'Stellar Vault',
                     style: TextStyle(
                       color: Colors.yellowAccent[700],
                       fontSize: 42,

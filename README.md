@@ -1,6 +1,6 @@
-# Interstellar Wallet
+# Stellar Vault
 
-**Interstellar Wallet** is a cross-border payment app designed for merchants, offering a fast, low-cost, and user-friendly solution powered by the Stellar blockchain. It simplifies payments and customer retention by leveraging Stellar’s decentralized network, low transaction fees, and smart contract functionality. The wallet integrates peer-to-peer payment capabilities and QR code scanning for fast and easy transactions, making it ideal for small and medium-sized businesses, as well as non-crypto-savvy users.
+**Stellar Vault** is a cross-border payment app designed for merchants, offering a fast, low-cost, and user-friendly solution powered by the Stellar blockchain. It simplifies payments and customer retention by leveraging Stellar’s decentralized network, low transaction fees, and smart contract functionality. The wallet integrates peer-to-peer payment capabilities and QR code scanning for fast and easy transactions, making it ideal for small and medium-sized businesses, as well as non-crypto-savvy users.
 
 ## Features
 
@@ -27,7 +27,7 @@
 ## Tech Stack
 
 - **Flutter**: The app is built using Flutter, providing a seamless cross-platform mobile experience.
-- **Stellar SDK**: Interstellar Wallet leverages the Stellar SDK for blockchain interactions.
+- **Stellar SDK**: stellar Vault leverages the Stellar SDK for blockchain interactions.
 - **Soroban Smart Contracts**: Used for managing tokenized discounts and other automated operations.
 
 ## Getting Started
@@ -40,9 +40,9 @@
 ### Installation
 
 1. Clone the repository:
-   ```bash git clone https://github.com/yourusername/interstellar-wallet.git```
+   ```bash git clone https://github.com/yourusername/stellar-vault.git```
 
-2.  ```bash cd interstellar-wallet```
+2.  ```bash cd Stellar-vault```
 3.  flutter pub get
 4.  flutter run
 
