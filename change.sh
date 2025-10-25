@@ -1,48 +1,49 @@
 #!/bin/bash
 
-# Configuration
+# Get timestamps
 NOW=$(date +%s)
-YESTERDAY=$(date -d "yesterday" +%s)
+YESTERDAY=$(date -d "1 day ago" +%s)
 COMMIT_COUNT=$(git rev-list --count HEAD)
 
-echo "Scattering $COMMIT_COUNT commits between yesterday and today..."
+echo "Scattering $COMMIT_COUNT commits between yesterday and now..."
 
-# Generate random timestamps
+# Generate and sort random timestamps
 TIMESTAMPS=()
 for ((i=0; i<COMMIT_COUNT-1; i++)); do
-    RANDOM_TIMESTAMP=$((YESTERDAY + RANDOM % (NOW - YESTERDAY)))
-    TIMESTAMPS+=($RANDOM_TIMESTAMP)
+    RANDOM_TS=$((YESTERDAY + RANDOM % (NOW - YESTERDAY)))
+    TIMESTAMPS+=($RANDOM_TS)
 done
+TIMESTAMPS+=($NOW)  # Last commit = now
 
-# Add current time as last commit
-TIMESTAMPS+=($NOW)
-
-# Sort timestamps
+# Sort
 IFS=$'\n' TIMESTAMPS=($(sort -n <<<"${TIMESTAMPS[*]}"))
 unset IFS
 
-# Convert to git date format
+# Convert to git format and store
 DATES=()
 for ts in "${TIMESTAMPS[@]}"; do
     DATES+=("$(date -d "@$ts" "+%a %b %d %H:%M:%S %Y %z")")
 done
 
-# Show preview
-echo "Generated dates:"
+# Show what will be applied
+echo "Dates to apply:"
 for i in "${!DATES[@]}"; do
-    echo "  Commit $((i+1)): ${DATES[$i]}"
+    echo "  $((i+1)). ${DATES[$i]}"
 done
 
-# Apply changes
+echo -e "\nApplying changes..."
+
+# Apply to all commits
 git filter-branch -f --env-filter '
-    commit_num=$(git rev-list --reverse HEAD | grep -n $GIT_COMMIT | cut -d: -f1)
-    commit_index=$((commit_num - 1))
+    commit_num=$(git rev-list --reverse HEAD | grep -n "$GIT_COMMIT" | cut -d: -f1)
+    idx=$((commit_num - 1))
     
     DATES=('"$(printf '"%s" ' "${DATES[@]}")"')
-    NEW_DATE="${DATES[$commit_index]}"
+    DATE="${DATES[$idx]}"
     
-    export GIT_AUTHOR_DATE="$NEW_DATE"
-    export GIT_COMMITTER_DATE="$NEW_DATE"
+    export GIT_AUTHOR_DATE="$DATE"
+    export GIT_COMMITTER_DATE="$DATE"
 ' --tag-name-filter cat -- --all
 
-echo "✅ Complete! Last commit is set to: $(date)"
+# Clean up Git's filter-branch backup
+rm -rf .git/refs/original
